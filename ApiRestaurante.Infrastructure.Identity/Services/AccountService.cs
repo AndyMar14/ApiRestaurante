@@ -142,6 +142,58 @@ namespace ApiRestaurante.Infrastructure.Identity.Services
             return response;
         }
 
+        public async Task<RegisterResponse> RegisterAdminUserAsync(RegisterRequest request, string origin)
+        {
+            RegisterResponse response = new()
+            {
+                HasError = false
+            };
+
+            var userWithSameUserName = await _userManager.FindByNameAsync(request.UserName);
+            if (userWithSameUserName != null)
+            {
+                response.HasError = true;
+                response.Error = $"username '{request.UserName}' is already taken.";
+                return response;
+            }
+
+            var userWithSameEmail = await _userManager.FindByEmailAsync(request.Email);
+            if (userWithSameEmail != null)
+            {
+                response.HasError = true;
+                response.Error = $"Email '{request.Email}' is already registered.";
+                return response;
+            }
+
+            var user = new ApplicationUser
+            {
+                Email = request.Email,
+                FirstName = request.FirstName,
+                LastName = request.LastName,
+                UserName = request.UserName
+            };
+
+            var result = await _userManager.CreateAsync(user, request.Password);
+            if (result.Succeeded)
+            {
+                await _userManager.AddToRoleAsync(user, Roles.Admin.ToString());
+                var verificationUri = await SendVerificationEmailUri(user, origin);
+                await _emailService.SendAsync(new Core.Application.Dtos.Email.EmailRequest()
+                {
+                    To = user.Email,
+                    Body = $"Please confirm your account visiting this URL {verificationUri}",
+                    Subject = "Confirm registration"
+                });
+            }
+            else
+            {
+                response.HasError = true;
+                response.Error = $"An error occurred trying to register the user.";
+                return response;
+            }
+
+            return response;
+        }
         public async Task<string> ConfirmAccountAsync(string userId, string token)
         {
             var user = await _userManager.FindByIdAsync(userId);

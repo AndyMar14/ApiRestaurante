@@ -23,8 +23,15 @@ namespace ApiRestaurante.WebApi.Controllers
             return Ok(await _accountService.AuthenticateAsync(request));
         }
 
-        [HttpPost("register")]
-        public async Task<IActionResult> RegisterAsync(RegisterRequest request)
+        [HttpPost("register-basic")]
+        public async Task<IActionResult> RegisterBasicAsync(RegisterRequest request)
+        {
+            var origin = Request.Headers["origin"];
+            return Ok(await _accountService.RegisterBasicUserAsync(request, origin));
+        }
+
+        [HttpPost("register-admin")]
+        public async Task<IActionResult> RegisterAdminAsync(RegisterRequest request)
         {
             var origin = Request.Headers["origin"];
             return Ok(await _accountService.RegisterBasicUserAsync(request, origin));
