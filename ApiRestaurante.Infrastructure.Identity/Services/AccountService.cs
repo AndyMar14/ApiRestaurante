@@ -117,20 +117,14 @@ namespace ApiRestaurante.Infrastructure.Identity.Services
                 Email = request.Email,
                 FirstName = request.FirstName,
                 LastName = request.LastName,
-                UserName = request.UserName
+                UserName = request.UserName,
+                EmailConfirmed = true
             };
 
             var result = await _userManager.CreateAsync(user, request.Password);
             if (result.Succeeded)
             {
                 await _userManager.AddToRoleAsync(user, Roles.Mesero.ToString());
-                var verificationUri = await SendVerificationEmailUri(user, origin);
-                await _emailService.SendAsync(new Core.Application.Dtos.Email.EmailRequest()
-                {
-                    To = user.Email,
-                    Body = $"Please confirm your account visiting this URL {verificationUri}",
-                    Subject = "Confirm registration"
-                });
             }
             else
             {
@@ -170,7 +164,8 @@ namespace ApiRestaurante.Infrastructure.Identity.Services
                 Email = request.Email,
                 FirstName = request.FirstName,
                 LastName = request.LastName,
-                UserName = request.UserName
+                UserName = request.UserName,
+                EmailConfirmed = true
             };
 
             var result = await _userManager.CreateAsync(user, request.Password);

@@ -8,6 +8,7 @@ namespace ApiRestaurante.Core.Application.Interfaces.Services
     {
         Task<AuthenticationResponse> AuthenticateAsync(AuthenticationRequest request);
         Task<RegisterResponse> RegisterBasicUserAsync(RegisterRequest request, string origin);
+        Task<RegisterResponse> RegisterAdminUserAsync(RegisterRequest request, string origin);
         Task SignOutAsync();
     }
 }

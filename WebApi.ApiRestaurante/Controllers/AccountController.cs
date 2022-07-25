@@ -3,11 +3,13 @@ using Microsoft.AspNetCore.Mvc;
 using ApiRestaurante.Core.Application.Dtos.Account;
 using ApiRestaurante.Core.Application.Interfaces.Services;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ApiRestaurante.WebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+
     public class AccountController : ControllerBase
     {
         private readonly IAccountService _accountService;
@@ -30,11 +32,12 @@ namespace ApiRestaurante.WebApi.Controllers
             return Ok(await _accountService.RegisterBasicUserAsync(request, origin));
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost("register-admin")]
         public async Task<IActionResult> RegisterAdminAsync(RegisterRequest request)
         {
             var origin = Request.Headers["origin"];
-            return Ok(await _accountService.RegisterBasicUserAsync(request, origin));
+            return Ok(await _accountService.RegisterAdminUserAsync(request, origin));
         }
     }
 }
