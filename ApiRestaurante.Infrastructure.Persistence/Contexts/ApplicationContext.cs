@@ -14,11 +14,13 @@ namespace ApiRestaurante.Infrastructure.Persistence.Contexts
     {
         public ApplicationContext(DbContextOptions<ApplicationContext> options) : base(options) { }
         public DbSet<Ingredientes> Ingredientes { get; set; }
+        public DbSet<Platos> Platos { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             //FLUENT API
             base.OnModelCreating(modelBuilder);
             modelBuilder.ApplyConfiguration(new IngredientesMap());
+            modelBuilder.ApplyConfiguration(new PlatosMap());
 
         }
 

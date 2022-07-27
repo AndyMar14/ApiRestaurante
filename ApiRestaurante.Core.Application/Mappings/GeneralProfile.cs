@@ -3,6 +3,7 @@ using ApiRestaurante.Core.Application.ViewModels.User;
 using ApiRestaurante.Core.Application.Dtos.Account;
 using ApiRestaurante.Core.Domain.Entities;
 using ApiRestaurante.Core.Application.ViewModels.Ingredientes;
+using ApiRestaurante.Core.Application.ViewModels.Platos;
 
 namespace ApiRestaurante.Core.Application.Mappings
 {
@@ -14,6 +15,12 @@ namespace ApiRestaurante.Core.Application.Mappings
                 .ReverseMap();
 
             CreateMap<Ingredientes, SaveIngredientesViewModel>()
+                .ReverseMap();
+
+            CreateMap<Platos, PlatosViewModel>()
+                .ReverseMap();
+
+            CreateMap<Platos, SavePlatosViewModel>()
                 .ReverseMap();
 
             CreateMap<AuthenticationRequest, LoginViewModel>()
