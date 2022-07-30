@@ -28,6 +28,11 @@ namespace ApiRestaurante.Core.Application.Mappings
                 .ForMember(x => x.Ingredientes, opt => opt.Ignore())
                 .ReverseMap();
 
+            CreateMap<PlatosViewModel, SavePlatosViewModel>()
+            .ForMember(x => x.Ingredientes, opt => opt.Ignore())
+            .ReverseMap()
+            .ForMember(x => x.Ingredientes, opt => opt.Ignore());
+
 
 
             CreateMap<Mesas, MesasViewModel>()

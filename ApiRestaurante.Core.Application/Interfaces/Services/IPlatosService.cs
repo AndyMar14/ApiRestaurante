@@ -10,5 +10,6 @@ namespace ApiRestaurante.Core.Application.Interfaces.Services
 {
     public interface IPlatosService : IGenericService<SavePlatosViewModel, PlatosViewModel, Platos>
     {
+        Task<PlatosViewModel> GetPlatoById(int Id);
     }
 }

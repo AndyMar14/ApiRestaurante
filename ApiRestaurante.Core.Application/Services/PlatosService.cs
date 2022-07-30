@@ -42,5 +42,20 @@ namespace ApiRestaurante.Core.Application.Services
             }
             return platos;
         }
+
+        public async Task<PlatosViewModel> GetPlatoById(int Id)
+        {
+            var plato = await base.GetByIdSaveViewModel(Id);
+            PlatosViewModel platoVm = _mapper.Map<PlatosViewModel>(plato);
+
+            var DetallePLato = await _detallePlatosRepository.GetAllAsync(Id);
+            platoVm.Ingredientes = DetallePLato.Select(ingre => new ViewModels.Ingredientes.IngredientesViewModel
+            {
+                Id = ingre.Ingrediente.Id,
+                Nombre = ingre.Ingrediente.Nombre
+            }).ToList();
+
+            return platoVm;
+        }
     }
 }

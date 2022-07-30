@@ -55,7 +55,7 @@ namespace WebApi.ApiRestaurante.Controllers.v1
         {
             try
             {
-                var product = await _platosService.GetByIdSaveViewModel(id);
+                var product = await _platosService.GetPlatoById(id);
 
                 if (product == null)
                 {
