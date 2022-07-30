@@ -1,4 +1,6 @@
-﻿using System;
+﻿using ApiRestaurante.Core.Application.ViewModels.DetalleOrden;
+using ApiRestaurante.Core.Application.ViewModels.Mesas;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,7 +15,8 @@ namespace ApiRestaurante.Core.Application.ViewModels.Orden
         public float Subtotal { get; set; }
         public int Estado { get; set; }
 
-        ////Navigation property
-        //public ICollection<DetalleOrden> Platos { get; set; }
+        //Navigation property
+        public ICollection<DetalleOrdenViewModel> Platos { get; set; }
+        public ICollection<MesasViewModel> Mesa { get; set; }
     }
 }

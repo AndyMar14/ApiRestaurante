@@ -17,14 +17,15 @@ namespace ApiRestaurante.Core.Application.Services
     class OrdenService : GenericService<SaveOrdenViewModel, OrdenViewModel, Orden>, IOrdenesService
     {
         private readonly IOrdenesRepository _ordenRepository;
-        private readonly IDetalleOrdenRepository _detalleOrdenRepository;
+        private readonly IDetalleOrdenesService _detalleOrdenService;
         private readonly IMapper _mapper;
         private readonly IHttpContextAccessor _httpContextAccessor;
-        public OrdenService(IOrdenesRepository ordenRepository, IMapper mapper, IHttpContextAccessor httpContextAccessor) : base(ordenRepository, mapper)
+        public OrdenService(IOrdenesRepository ordenRepository, IMapper mapper, IHttpContextAccessor httpContextAccessor,IDetalleOrdenesService detalleOrdenService) : base(ordenRepository, mapper)
         {
             _ordenRepository = ordenRepository;
             _mapper = mapper;
             _httpContextAccessor = httpContextAccessor;
+            _detalleOrdenService = detalleOrdenService;
         }
 
         public override async Task<SaveOrdenViewModel> Add(SaveOrdenViewModel vm)
@@ -34,24 +35,34 @@ namespace ApiRestaurante.Core.Application.Services
 
             SaveOrdenViewModel svm = _mapper.Map<SaveOrdenViewModel>(entity);
 
-            foreach (SaveDetalleOrdenViewModel item in vm.DetalleOrden)
+            foreach (SaveDetalleOrden2ViewModel item in vm.DetalleOrden)
             {
                 DetalleOrden entityDetalle = _mapper.Map<DetalleOrden>(item);
                 entityDetalle.IdPlato = item.IdPlato;
                 entityDetalle.IdOrden = entity.Id;
-                await _detalleOrdenRepository.AddAsync(entityDetalle);
+
+                SaveDetalleOrdenViewModel dvm = new();
+                dvm.IdOrden = svm.Id;
+                dvm.IdPlato = item.IdPlato;
+                await _detalleOrdenService.Add(dvm);
             }
             return svm;
         }
 
-        //public virtual async Task<SaveOrdenViewModel> Add(SaveOrdenViewModel vm)
-        //{
-        //    Model entity = _mapper.Map<Model>(vm);
+        public override async Task<List<OrdenViewModel>> GetAllViewModel()
+        {
+            var ordenList = await _ordenRepository.GetAllWithIncludeAsync(new List<string> { "Platos" });
 
-        //    entity = await _repository.AddAsync(entity);
-
-        //    SaveViewModel categoryVm = _mapper.Map<SaveViewModel>(entity);
-        //    return categoryVm;
-        //}
+            return ordenList.Select(orden => new OrdenViewModel
+            {
+                Id = orden.Id,
+                IdMesa = orden.IdMesa,
+                Platos = (ICollection<DetalleOrdenViewModel>)orden.Platos.Where(d => d.IdOrden == orden.Id)
+                .Select(d => new DetalleOrdenViewModel
+                {
+                    IdPlato = d.IdPlato
+                }).ToList()
+            }).ToList();
+        }
     }
 }

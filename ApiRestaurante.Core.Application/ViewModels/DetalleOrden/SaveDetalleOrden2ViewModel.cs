@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ApiRestaurante.Core.Application.ViewModels.DetalleOrden
 {
-    public class DetalleOrdenViewModel
+    public class SaveDetalleOrden2ViewModel
     {
         public int IdPlato { get; set; }
     }

@@ -42,7 +42,14 @@ namespace ApiRestaurante.Core.Application.Mappings
                 .ReverseMap();
 
             CreateMap<DetalleOrden, SaveDetalleOrdenViewModel>()
-                .ReverseMap();
+                .ReverseMap()
+                .ForMember(x => x.Orden, opt => opt.Ignore())
+                .ForMember(x => x.Platos, opt => opt.Ignore());
+
+            CreateMap<DetalleOrden, SaveDetalleOrden2ViewModel>()
+                .ReverseMap()
+                .ForMember(x => x.Orden, opt => opt.Ignore())
+                .ForMember(x => x.Platos, opt => opt.Ignore());
 
             CreateMap<AuthenticationRequest, LoginViewModel>()
                 .ForMember(x => x.HasError, opt => opt.Ignore())

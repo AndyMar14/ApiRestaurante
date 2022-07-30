@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace ApiRestaurante.Infrastructure.Persistence.Repositories
 {
-    public class DetalleOrdenRepository : GenericRepository<Orden>, IOrdenesRepository
+    public class DetalleOrdenRepository : GenericRepository<DetalleOrden>, IDetalleOrdenRepository
     {
         private readonly ApplicationContext _dbContext;
 

@@ -11,6 +11,6 @@ namespace ApiRestaurante.Core.Application.ViewModels.Orden
     {
         public int Id { get; set; }
         public int IdMesa { get; set; }
-        public ICollection<SaveDetalleOrdenViewModel> DetalleOrden { get; set; }
+        public ICollection<SaveDetalleOrden2ViewModel> DetalleOrden { get; set; }
     }
 }
