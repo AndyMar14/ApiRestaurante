@@ -2,30 +2,29 @@
 
 namespace ApiRestaurante.Infrastructure.Persistence.Migrations
 {
-    public partial class initial1 : Migration
+    public partial class Initial3 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Mesas",
+                name: "DetallePlatos",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    CantidadPersonas = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Descripcion = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Estado = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    IdPlato = table.Column<int>(type: "int", nullable: false),
+                    IdIngrediente = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Mesas", x => x.Id);
+                    table.PrimaryKey("PK_DetallePlatos", x => x.Id);
                 });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Mesas");
+                name: "DetallePlatos");
         }
     }
 }

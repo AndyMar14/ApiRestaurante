@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ApiRestaurante.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20220730115434_initial")]
-    partial class initial
+    [Migration("20220730221514_Initial5")]
+    partial class Initial5
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -19,6 +19,26 @@ namespace ApiRestaurante.Infrastructure.Persistence.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.17")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("ApiRestaurante.Core.Domain.Entities.DetallePlatos", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("IdIngrediente")
+                        .HasColumnType("int");
+
+                    b.Property<int>("IdPlato")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IdIngrediente");
+
+                    b.ToTable("DetallePlatos");
+                });
 
             modelBuilder.Entity("ApiRestaurante.Core.Domain.Entities.Ingredientes", b =>
                 {
@@ -35,6 +55,27 @@ namespace ApiRestaurante.Infrastructure.Persistence.Migrations
                     b.ToTable("ingredientes");
                 });
 
+            modelBuilder.Entity("ApiRestaurante.Core.Domain.Entities.Mesas", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("CantidadPersonas")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Descripcion")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Estado")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Mesas");
+                });
+
             modelBuilder.Entity("ApiRestaurante.Core.Domain.Entities.Platos", b =>
                 {
                     b.Property<int>("Id")
@@ -48,9 +89,6 @@ namespace ApiRestaurante.Infrastructure.Persistence.Migrations
                     b.Property<string>("Categoria")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Ingredientes")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Nombre")
                         .HasColumnType("nvarchar(max)");
 
@@ -60,6 +98,22 @@ namespace ApiRestaurante.Infrastructure.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("platos");
+                });
+
+            modelBuilder.Entity("ApiRestaurante.Core.Domain.Entities.DetallePlatos", b =>
+                {
+                    b.HasOne("ApiRestaurante.Core.Domain.Entities.Ingredientes", "Ingrediente")
+                        .WithMany("DetallePLatos")
+                        .HasForeignKey("IdIngrediente")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Ingrediente");
+                });
+
+            modelBuilder.Entity("ApiRestaurante.Core.Domain.Entities.Ingredientes", b =>
+                {
+                    b.Navigation("DetallePLatos");
                 });
 #pragma warning restore 612, 618
         }

@@ -1,4 +1,5 @@
 ﻿using ApiRestaurante.Core.Application.Interfaces.Services;
+using ApiRestaurante.Core.Application.ViewModels.DetallePlatos;
 using ApiRestaurante.Core.Application.ViewModels.Platos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -15,10 +16,13 @@ namespace WebApi.ApiRestaurante.Controllers.v1
     public class PlatosController : BaseApiController
     {
         private readonly IPlatosService _platosService;
+        private readonly IDetallePlatosService _detallePlatosService;
 
-        public PlatosController(IPlatosService plantosService)
+        public PlatosController(IPlatosService plantosService, IDetallePlatosService detallePlatosService)
         {
             _platosService = plantosService;
+            _detallePlatosService = detallePlatosService;
+
         }
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PlatosViewModel))]
@@ -28,14 +32,14 @@ namespace WebApi.ApiRestaurante.Controllers.v1
         {
             try
             {
-                var ingredientes = await _platosService.GetAllViewModel();
+                var platos = await _platosService.GetAllViewModel();
 
-                if (ingredientes == null || ingredientes.Count == 0)
+                if (platos == null || platos.Count == 0)
                 {
                     return NotFound();
                 }
 
-                return Ok(ingredientes);
+                return Ok(platos);
             }
             catch (Exception ex)
             {
@@ -51,7 +55,7 @@ namespace WebApi.ApiRestaurante.Controllers.v1
         {
             try
             {
-                var product = await _platosService.GetByIdSaveViewModel(id);
+                var product = await _platosService.GetPlatoById(id);
 
                 if (product == null)
                 {
@@ -79,7 +83,20 @@ namespace WebApi.ApiRestaurante.Controllers.v1
                     return BadRequest();
                 }
 
-                await _platosService.Add(vm);
+                string split = vm.Ingredientes;
+                List<string> list = new List<string>();
+                list = split.Split(',').ToList();
+
+                var plato = await _platosService.Add(vm);
+
+                foreach (var l in list)
+                {
+                    SaveDetallePlatosViewModel ingrediente = new();
+                    ingrediente.IdPlato = plato.Id;
+                    ingrediente.IdIngrediente = Int32.Parse(l);
+                    await _detallePlatosService.Add(ingrediente);
+                }
+
                 return NoContent();
             }
             catch (Exception ex)
@@ -92,7 +109,7 @@ namespace WebApi.ApiRestaurante.Controllers.v1
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SavePlatosViewModel))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> Update(int id, SavePlatosViewModel vm)
+        public async Task<IActionResult> Update(int Id, SavePlatosViewModel vm)
         {
             try
             {
@@ -101,7 +118,22 @@ namespace WebApi.ApiRestaurante.Controllers.v1
                     return BadRequest();
                 }
 
-                await _platosService.Update(vm, id);
+                await _platosService.Update(vm, Id);
+
+                await _detallePlatosService.DeleteAllAsync(Id);
+
+                string split = vm.Ingredientes;
+                List<string> list = new List<string>();
+                list = split.Split(',').ToList();
+
+                foreach (var l in list)
+                {
+                    SaveDetallePlatosViewModel ingrediente = new();
+                    ingrediente.IdPlato = Id;
+                    ingrediente.IdIngrediente = Int32.Parse(l);
+                    await _detallePlatosService.Add(ingrediente);
+                }
+
                 return Ok(vm);
             }
             catch (Exception ex)
