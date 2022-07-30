@@ -1,4 +1,6 @@
-﻿using System;
+﻿using ApiRestaurante.Core.Application.ViewModels.DetallePlatos;
+using ApiRestaurante.Core.Application.ViewModels.Ingredientes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,7 +14,9 @@ namespace ApiRestaurante.Core.Application.ViewModels.Platos
         public string Nombre { get; set; }
         public float Precio { get; set; }
         public int CantidadPersonas { get; set; }
-        public string Ingredientes { get; set; }
+        //public string Ingredientes { get; set; }
         public string Categoria { get; set; }
+
+        public ICollection<IngredientesViewModel> Ingredientes { get; set; }
     }
 }

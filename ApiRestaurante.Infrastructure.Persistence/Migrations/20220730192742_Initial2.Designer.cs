@@ -3,40 +3,22 @@ using ApiRestaurante.Infrastructure.Persistence.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ApiRestaurante.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20220730192742_Initial2")]
+    partial class Initial2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.17")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-            modelBuilder.Entity("ApiRestaurante.Core.Domain.Entities.DetallePlatos", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("IdIngrediente")
-                        .HasColumnType("int");
-
-                    b.Property<int>("IdPlato")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("IdIngrediente");
-
-                    b.ToTable("DetallePlatos");
-                });
 
             modelBuilder.Entity("ApiRestaurante.Core.Domain.Entities.Ingredientes", b =>
                 {
@@ -96,22 +78,6 @@ namespace ApiRestaurante.Infrastructure.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("platos");
-                });
-
-            modelBuilder.Entity("ApiRestaurante.Core.Domain.Entities.DetallePlatos", b =>
-                {
-                    b.HasOne("ApiRestaurante.Core.Domain.Entities.Ingredientes", "Ingrediente")
-                        .WithMany("DetallePLatos")
-                        .HasForeignKey("IdIngrediente")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Ingrediente");
-                });
-
-            modelBuilder.Entity("ApiRestaurante.Core.Domain.Entities.Ingredientes", b =>
-                {
-                    b.Navigation("DetallePLatos");
                 });
 #pragma warning restore 612, 618
         }

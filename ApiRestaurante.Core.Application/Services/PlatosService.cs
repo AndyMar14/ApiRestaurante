@@ -16,14 +16,31 @@ namespace ApiRestaurante.Core.Application.Services
     class PlatosService : GenericService<SavePlatosViewModel, PlatosViewModel, Platos>,IPlatosService
     {
         private readonly IPlatosRepository _platosRepository;
+        private readonly IDetallePlatosRepository _detallePlatosRepository;
         private readonly IMapper _mapper;
         private readonly IHttpContextAccessor _httpContextAccessor;
-        public PlatosService(IPlatosRepository ingredientesRepository, IMapper mapper, IHttpContextAccessor httpContextAccessor) : base(ingredientesRepository, mapper)
+        public PlatosService(IDetallePlatosRepository detallePlatosRepository,IPlatosRepository platosRepository, IMapper mapper, IHttpContextAccessor httpContextAccessor) : base(platosRepository, mapper)
         {
-            _platosRepository = ingredientesRepository;
+            _platosRepository = platosRepository;
+            _detallePlatosRepository = detallePlatosRepository;
             _mapper = mapper;
             _httpContextAccessor = httpContextAccessor;
 
+        }
+
+        public override async Task<List<PlatosViewModel>> GetAllViewModel()
+        {
+            List<PlatosViewModel> platos = await base.GetAllViewModel();
+
+            foreach (var plato in platos)
+            {
+                List<DetallePlatos> DetallePLatos = await _detallePlatosRepository.GetAllAsync(plato.Id);
+                plato.Ingredientes = DetallePLatos.Select(ingre => new ViewModels.Ingredientes.IngredientesViewModel { 
+                    Id = ingre.Ingrediente.Id,
+                    Nombre = ingre.Ingrediente.Nombre
+                }).ToList();
+            }
+            return platos;
         }
     }
 }

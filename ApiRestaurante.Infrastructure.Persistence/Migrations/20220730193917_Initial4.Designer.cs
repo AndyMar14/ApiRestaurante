@@ -3,14 +3,16 @@ using ApiRestaurante.Infrastructure.Persistence.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ApiRestaurante.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20220730193917_Initial4")]
+    partial class Initial4
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -32,8 +34,6 @@ namespace ApiRestaurante.Infrastructure.Persistence.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("IdIngrediente");
 
                     b.ToTable("DetallePlatos");
                 });
@@ -96,22 +96,6 @@ namespace ApiRestaurante.Infrastructure.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("platos");
-                });
-
-            modelBuilder.Entity("ApiRestaurante.Core.Domain.Entities.DetallePlatos", b =>
-                {
-                    b.HasOne("ApiRestaurante.Core.Domain.Entities.Ingredientes", "Ingrediente")
-                        .WithMany("DetallePLatos")
-                        .HasForeignKey("IdIngrediente")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Ingrediente");
-                });
-
-            modelBuilder.Entity("ApiRestaurante.Core.Domain.Entities.Ingredientes", b =>
-                {
-                    b.Navigation("DetallePLatos");
                 });
 #pragma warning restore 612, 618
         }

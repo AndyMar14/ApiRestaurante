@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ApiRestaurante.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20220730142044_initial2")]
-    partial class initial2
+    [Migration("20220730193118_Initial3")]
+    partial class Initial3
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -19,6 +19,24 @@ namespace ApiRestaurante.Infrastructure.Persistence.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.17")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("ApiRestaurante.Core.Domain.Entities.DetallePlatos", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("IdIngrediente")
+                        .HasColumnType("int");
+
+                    b.Property<int>("IdPlato")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("DetallePlatos");
+                });
 
             modelBuilder.Entity("ApiRestaurante.Core.Domain.Entities.Ingredientes", b =>
                 {
@@ -67,9 +85,6 @@ namespace ApiRestaurante.Infrastructure.Persistence.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Categoria")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Ingredientes")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Nombre")
