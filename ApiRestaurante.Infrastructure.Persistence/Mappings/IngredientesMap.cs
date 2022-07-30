@@ -15,6 +15,12 @@ namespace ApiRestaurante.Infrastructure.Persistence.Mappings
         {
             builder.ToTable("ingredientes")
                .HasKey(i => i.Id);
+
+            builder
+             .HasMany<DetallePlatos>(p => p.DetallePLatos)
+             .WithOne(p => p.Ingrediente)
+             .HasForeignKey(p => p.IdIngrediente)
+             .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

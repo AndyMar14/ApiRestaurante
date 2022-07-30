@@ -25,6 +25,7 @@ namespace ApiRestaurante.Infrastructure.Persistence
             services.AddTransient<IMesasService, MesasService>();
             services.AddTransient<IOrdenesService, OrdenService>();
             services.AddTransient<IDetalleOrdenesService, DetalleOrdenService>();
+            services.AddTransient<IDetallePlatosService, DetallePlatosService>();
             #endregion
         }
     }

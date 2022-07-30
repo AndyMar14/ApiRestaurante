@@ -8,6 +8,8 @@ using ApiRestaurante.Core.Application.ViewModels.Mesas;
 using ApiRestaurante.Core.Application.ViewModels.Orden;
 using ApiRestaurante.Core.Application.ViewModels.DetalleOrden;
 
+using ApiRestaurante.Core.Application.ViewModels.DetallePlatos;
+
 namespace ApiRestaurante.Core.Application.Mappings
 {
     public class GeneralProfile : Profile
@@ -18,13 +20,23 @@ namespace ApiRestaurante.Core.Application.Mappings
                 .ReverseMap();
 
             CreateMap<Ingredientes, SaveIngredientesViewModel>()
-                .ReverseMap();
+                .ReverseMap()
+                .ForMember(x => x.DetallePLatos, opt => opt.Ignore());
 
             CreateMap<Platos, PlatosViewModel>()
+                .ForMember(x => x.Ingredientes, opt => opt.Ignore())
                 .ReverseMap();
 
             CreateMap<Platos, SavePlatosViewModel>()
+                .ForMember(x => x.Ingredientes, opt => opt.Ignore())
                 .ReverseMap();
+
+            CreateMap<PlatosViewModel, SavePlatosViewModel>()
+            .ForMember(x => x.Ingredientes, opt => opt.Ignore())
+            .ReverseMap()
+            .ForMember(x => x.Ingredientes, opt => opt.Ignore());
+
+
 
             CreateMap<Mesas, MesasViewModel>()
                 .ReverseMap();
@@ -50,6 +62,12 @@ namespace ApiRestaurante.Core.Application.Mappings
                 .ReverseMap()
                 .ForMember(x => x.Orden, opt => opt.Ignore())
                 .ForMember(x => x.Platos, opt => opt.Ignore());
+
+            CreateMap<DetallePlatos, SaveDetallePlatosViewModel>()
+                .ReverseMap();
+
+            CreateMap<DetallePlatos, DetallePlatosViewModel>()
+                .ReverseMap();
 
             CreateMap<AuthenticationRequest, LoginViewModel>()
                 .ForMember(x => x.HasError, opt => opt.Ignore())

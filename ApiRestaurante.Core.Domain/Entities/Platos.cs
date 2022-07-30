@@ -12,7 +12,6 @@ namespace ApiRestaurante.Core.Domain.Entities
         public string Nombre { get; set; }
         public float Precio { get; set; }
         public int CantidadPersonas { get; set; }
-        public string Ingredientes { get; set; }
         public string Categoria { get; set; }
 
     }

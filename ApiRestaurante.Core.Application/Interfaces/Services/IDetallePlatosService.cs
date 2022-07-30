@@ -1,4 +1,4 @@
-﻿using ApiRestaurante.Core.Application.ViewModels.Platos;
+﻿using ApiRestaurante.Core.Application.ViewModels.DetallePlatos;
 using ApiRestaurante.Core.Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 
 namespace ApiRestaurante.Core.Application.Interfaces.Services
 {
-    public interface IPlatosService : IGenericService<SavePlatosViewModel, PlatosViewModel, Platos>
+    public interface IDetallePlatosService : IGenericService<SaveDetallePlatosViewModel, DetallePlatosViewModel, DetallePlatos>
     {
-        Task<PlatosViewModel> GetPlatoById(int Id);
+        Task DeleteAllAsync(int IdPlato);
     }
 }
