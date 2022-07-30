@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ApiRestaurante.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20220723230153_Ingredientes")]
-    partial class Ingredientes
+    [Migration("20220730115434_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -33,6 +33,33 @@ namespace ApiRestaurante.Infrastructure.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("ingredientes");
+                });
+
+            modelBuilder.Entity("ApiRestaurante.Core.Domain.Entities.Platos", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("CantidadPersonas")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Categoria")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Ingredientes")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Nombre")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<float>("Precio")
+                        .HasColumnType("real");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("platos");
                 });
 #pragma warning restore 612, 618
         }

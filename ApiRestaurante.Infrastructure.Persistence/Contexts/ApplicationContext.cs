@@ -21,6 +21,7 @@ namespace ApiRestaurante.Infrastructure.Persistence.Contexts
             base.OnModelCreating(modelBuilder);
             modelBuilder.ApplyConfiguration(new IngredientesMap());
             modelBuilder.ApplyConfiguration(new PlatosMap());
+            modelBuilder.ApplyConfiguration(new MesasMap());
 
         }
 
