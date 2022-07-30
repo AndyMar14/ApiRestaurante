@@ -37,6 +37,7 @@ namespace ApiRestaurante.Infrastructure.Persistence
             services.AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             services.AddTransient<IIngredientesRepository, IngredientesRepository>();
             services.AddTransient<IPlatosRepository, PlatosRepository>();
+            services.AddTransient<IMesasRepository, MesasRepository>();
             #endregion
         }
     }
