@@ -53,7 +53,7 @@ namespace WebApi.ApiRestaurante.Controllers.v1
         {
             try
             {
-                var product = await _ordenService.GetByIdSaveViewModel(id);
+                var product = await _ordenService.GetByIdViewModel(id); 
 
                 if (product == null)
                 {

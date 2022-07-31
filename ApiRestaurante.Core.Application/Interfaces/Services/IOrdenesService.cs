@@ -11,5 +11,6 @@ namespace ApiRestaurante.Core.Application.Interfaces.Services
 {
     public interface IOrdenesService : IGenericService<SaveOrdenViewModel, OrdenViewModel, Orden>
     {
+        Task<List<OrdenViewModel>> GetByIdViewModel(int IdOrden);
     }
 }

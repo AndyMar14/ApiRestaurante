@@ -89,5 +89,33 @@ namespace ApiRestaurante.Core.Application.Services
 
             return List;
         }
+
+        public async Task<List<OrdenViewModel>> GetByIdViewModel(int IdOrden)
+        {
+            var ordenList = await _ordenRepository.GetAllWithIncludeAsync(new List<string> { "Platos" });
+
+            List<OrdenViewModel> List = ordenList.Where(x => x.Id == IdOrden).Select(orden => new OrdenViewModel
+            {
+                Id = orden.Id,
+                IdMesa = orden.IdMesa,
+                Platos = orden.Platos.Where(d => d.IdOrden == orden.Id)
+                .Select(d => new DetalleOrdenViewModel
+                {
+                    IdPlato = d.IdPlato
+                }).ToList()
+            }).ToList();
+
+
+            foreach (OrdenViewModel orden in List)
+            {
+                foreach (DetalleOrdenViewModel p in orden.Platos)
+                {
+                    var platos = await _platosService.GetPlatoById(p.IdPlato);
+                    p.PlatosOrden = platos;
+                }
+            }
+
+            return List;
+        }
     }
 }
