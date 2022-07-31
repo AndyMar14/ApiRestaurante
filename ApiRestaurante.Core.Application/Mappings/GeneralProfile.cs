@@ -5,6 +5,9 @@ using ApiRestaurante.Core.Domain.Entities;
 using ApiRestaurante.Core.Application.ViewModels.Ingredientes;
 using ApiRestaurante.Core.Application.ViewModels.Platos;
 using ApiRestaurante.Core.Application.ViewModels.Mesas;
+using ApiRestaurante.Core.Application.ViewModels.Orden;
+using ApiRestaurante.Core.Application.ViewModels.DetalleOrden;
+
 using ApiRestaurante.Core.Application.ViewModels.DetallePlatos;
 
 namespace ApiRestaurante.Core.Application.Mappings
@@ -40,6 +43,25 @@ namespace ApiRestaurante.Core.Application.Mappings
 
             CreateMap<Mesas, SaveMesasViewModel>()
                 .ReverseMap();
+
+            CreateMap<Orden, OrdenViewModel>()
+                .ReverseMap();
+
+            CreateMap<Orden, SaveOrdenViewModel>()
+                .ReverseMap();
+
+            CreateMap<DetalleOrden, DetalleOrdenViewModel>()
+                .ReverseMap();
+
+            CreateMap<DetalleOrden, SaveDetalleOrdenViewModel>()
+                .ReverseMap()
+                .ForMember(x => x.Orden, opt => opt.Ignore())
+                .ForMember(x => x.Platos, opt => opt.Ignore());
+
+            CreateMap<DetalleOrden, SaveDetalleOrden2ViewModel>()
+                .ReverseMap()
+                .ForMember(x => x.Orden, opt => opt.Ignore())
+                .ForMember(x => x.Platos, opt => opt.Ignore());
 
             CreateMap<DetallePlatos, SaveDetallePlatosViewModel>()
                 .ReverseMap();
