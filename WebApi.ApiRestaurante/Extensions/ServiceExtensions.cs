@@ -24,8 +24,8 @@ namespace WebApi.ApiRestaurante.Extensions
                     Description = "This Api will be responsible for overall data distribution",
                     Contact = new OpenApiContact
                     {
-                        Name = "Andy Marmolejos",
-                        Email = "andyrafaelmar@gmail.com",
+                        Name = "Oscar Ballard",
+                        Email = "oballard.ms@gmail.com",
                         Url = new Uri("https://www.itla.edu.do")
                     }
                 });
