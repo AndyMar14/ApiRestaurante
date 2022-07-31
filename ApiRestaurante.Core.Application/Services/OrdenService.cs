@@ -2,6 +2,7 @@
 using ApiRestaurante.Core.Application.Interfaces.Services;
 using ApiRestaurante.Core.Application.ViewModels.DetalleOrden;
 using ApiRestaurante.Core.Application.ViewModels.Orden;
+using ApiRestaurante.Core.Application.ViewModels.Platos;
 using ApiRestaurante.Core.Domain.Entities;
 using Application.Services;
 using AutoMapper;
@@ -18,14 +19,16 @@ namespace ApiRestaurante.Core.Application.Services
     {
         private readonly IOrdenesRepository _ordenRepository;
         private readonly IDetalleOrdenesService _detalleOrdenService;
+        private readonly IPlatosService _platosService;
         private readonly IMapper _mapper;
         private readonly IHttpContextAccessor _httpContextAccessor;
-        public OrdenService(IOrdenesRepository ordenRepository, IMapper mapper, IHttpContextAccessor httpContextAccessor,IDetalleOrdenesService detalleOrdenService) : base(ordenRepository, mapper)
+        public OrdenService(IOrdenesRepository ordenRepository, IMapper mapper, IHttpContextAccessor httpContextAccessor,IDetalleOrdenesService detalleOrdenService, IPlatosService platosService) : base(ordenRepository, mapper)
         {
             _ordenRepository = ordenRepository;
             _mapper = mapper;
             _httpContextAccessor = httpContextAccessor;
             _detalleOrdenService = detalleOrdenService;
+            _platosService = platosService;
         }
 
         public override async Task<SaveOrdenViewModel> Add(SaveOrdenViewModel vm)
@@ -53,16 +56,28 @@ namespace ApiRestaurante.Core.Application.Services
         {
             var ordenList = await _ordenRepository.GetAllWithIncludeAsync(new List<string> { "Platos" });
 
-            return ordenList.Select(orden => new OrdenViewModel
+            List<OrdenViewModel> List = ordenList.Select(orden => new OrdenViewModel
             {
                 Id = orden.Id,
                 IdMesa = orden.IdMesa,
-                Platos = (ICollection<DetalleOrdenViewModel>)orden.Platos.Where(d => d.IdOrden == orden.Id)
+                Platos = orden.Platos.Where(d => d.IdOrden == orden.Id)
                 .Select(d => new DetalleOrdenViewModel
                 {
-                    IdPlato = d.IdPlato
+                    IdPlato     = d.IdPlato
                 }).ToList()
             }).ToList();
+
+
+            foreach (OrdenViewModel orden in List)
+            {
+                foreach (DetalleOrdenViewModel p in orden.Platos)
+                {
+                    var platos = await _platosService.GetPlatoById(p.IdPlato);
+                    p.PlatosOrden = platos;
+                }
+            }
+
+            return List;
         }
     }
 }
