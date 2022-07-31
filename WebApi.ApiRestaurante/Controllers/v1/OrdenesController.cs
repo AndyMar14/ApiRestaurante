@@ -15,10 +15,11 @@ namespace WebApi.ApiRestaurante.Controllers.v1
     public class OrdenController : BaseApiController
     {
         private readonly IOrdenesService _ordenService;
-
-        public OrdenController(IOrdenesService ordenService)
+        private readonly IDetalleOrdenesService _detalleOrdenesService;
+        public OrdenController(IOrdenesService ordenService, IDetalleOrdenesService detalleOrdenesService)
         {
             _ordenService = ordenService;
+            _detalleOrdenesService = detalleOrdenesService;
         }
 
         [HttpGet]
@@ -102,6 +103,7 @@ namespace WebApi.ApiRestaurante.Controllers.v1
                     return BadRequest();
                 }
 
+                await _detalleOrdenesService.DeleteAllAsync(id);
                 await _ordenService.Update(vm, id);
                 return Ok(vm);
             }

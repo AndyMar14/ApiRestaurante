@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ApiRestaurante.Infrastructure.Identity.Migrations
 {
     [DbContext(typeof(IdentityContext))]
-    [Migration("20220730121147_initial")]
-    partial class initial
+    [Migration("20220730235637_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

@@ -37,9 +37,6 @@ namespace ApiRestaurante.Core.Application.Services
 
             foreach (SaveDetalleOrden2ViewModel item in vm.DetalleOrden)
             {
-                DetalleOrden entityDetalle = _mapper.Map<DetalleOrden>(item);
-                entityDetalle.IdPlato = item.IdPlato;
-                entityDetalle.IdOrden = entity.Id;
 
                 SaveDetalleOrdenViewModel dvm = new();
                 dvm.IdOrden = svm.Id;
@@ -47,6 +44,19 @@ namespace ApiRestaurante.Core.Application.Services
                 await _detalleOrdenService.Add(dvm);
             }
             return svm;
+        }
+
+        public override async Task Update(SaveOrdenViewModel vm, int Id)
+        {
+
+            foreach (SaveDetalleOrden2ViewModel item in vm.DetalleOrden)
+            {
+                SaveDetalleOrdenViewModel dvm = new();
+                dvm.IdOrden = Id;
+                dvm.IdPlato = item.IdPlato;
+                await _detalleOrdenService.Add(dvm);
+            }
+
         }
 
         public override async Task<List<OrdenViewModel>> GetAllViewModel()

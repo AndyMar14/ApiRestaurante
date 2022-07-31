@@ -9,6 +9,6 @@ namespace ApiRestaurante.Core.Application.Interfaces.Repositories
 {
     public interface IDetalleOrdenRepository : IGenericRepository<DetalleOrden>
     {
-       
+        Task DeleteAllAsync(int IdOrden);
     } 
 }

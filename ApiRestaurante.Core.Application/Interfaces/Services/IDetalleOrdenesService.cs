@@ -12,5 +12,6 @@ namespace ApiRestaurante.Core.Application.Interfaces.Services
 {
     public interface IDetalleOrdenesService : IGenericService<SaveDetalleOrdenViewModel, DetalleOrdenViewModel, DetalleOrden>
     {
+        Task DeleteAllAsync(int IdOrden);
     }
 }

@@ -16,7 +16,6 @@ namespace ApiRestaurante.Core.Application.Services
 {
     class DetalleOrdenService : GenericService<SaveDetalleOrdenViewModel, DetalleOrdenViewModel, DetalleOrden>, IDetalleOrdenesService
     {
-        private readonly IDetalleOrdenRepository _ordenRepository;
         private readonly IDetalleOrdenRepository _detalleOrdenRepository;
         private readonly IMapper _mapper;
         private readonly IHttpContextAccessor _httpContextAccessor;
@@ -25,6 +24,10 @@ namespace ApiRestaurante.Core.Application.Services
             _detalleOrdenRepository = detalleOrdenRepository;
             _mapper = mapper;
             _httpContextAccessor = httpContextAccessor;
+        }
+        public async Task DeleteAllAsync(int IdOrden)
+        {
+            await _detalleOrdenRepository.DeleteAllAsync(IdOrden);
         }
     }
 }

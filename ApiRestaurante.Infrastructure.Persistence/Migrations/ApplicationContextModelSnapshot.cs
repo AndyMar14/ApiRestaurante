@@ -20,7 +20,6 @@ namespace ApiRestaurante.Infrastructure.Persistence.Migrations
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("ApiRestaurante.Core.Domain.Entities.DetalleOrden", b =>
-            modelBuilder.Entity("ApiRestaurante.Core.Domain.Entities.DetallePlatos", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -28,7 +27,6 @@ namespace ApiRestaurante.Infrastructure.Persistence.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("IdOrden")
-                    b.Property<int>("IdIngrediente")
                         .HasColumnType("int");
 
                     b.Property<int>("IdPlato")
@@ -44,6 +42,21 @@ namespace ApiRestaurante.Infrastructure.Persistence.Migrations
                     b.HasIndex("PlatosId");
 
                     b.ToTable("detalleOrden");
+                });
+
+            modelBuilder.Entity("ApiRestaurante.Core.Domain.Entities.DetallePlatos", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("IdIngrediente")
+                        .HasColumnType("int");
+
+                    b.Property<int>("IdPlato")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("IdIngrediente");
@@ -149,9 +162,6 @@ namespace ApiRestaurante.Infrastructure.Persistence.Migrations
                     b.Navigation("Platos");
                 });
 
-            modelBuilder.Entity("ApiRestaurante.Core.Domain.Entities.Orden", b =>
-                {
-                    b.Navigation("Platos");
             modelBuilder.Entity("ApiRestaurante.Core.Domain.Entities.DetallePlatos", b =>
                 {
                     b.HasOne("ApiRestaurante.Core.Domain.Entities.Ingredientes", "Ingrediente")
@@ -166,6 +176,11 @@ namespace ApiRestaurante.Infrastructure.Persistence.Migrations
             modelBuilder.Entity("ApiRestaurante.Core.Domain.Entities.Ingredientes", b =>
                 {
                     b.Navigation("DetallePLatos");
+                });
+
+            modelBuilder.Entity("ApiRestaurante.Core.Domain.Entities.Orden", b =>
+                {
+                    b.Navigation("Platos");
                 });
 #pragma warning restore 612, 618
         }
